@@ -1,9 +1,12 @@
-
+import Register from './components/Register';
+import { Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <div >
-      hi
+    <div>
+      <Switch>
+        <Route exact path='/'><Register /></Route>
+      </Switch>
     </div>
   );
 }
