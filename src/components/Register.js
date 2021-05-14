@@ -46,16 +46,18 @@ const Register = (props) => {
     }
 
     const registerFunc = () => {
-        console.log(stdID);
+
         if (stdID.length !== 10) {
             setOpenInfo(true);
             setInfoTxt('กรุณากรอกรหัสนักศึกษาให้ครบ 10 หลัก');
         } else {
-            checkStudentID();
+            getStudentData();
         }
+
     }
 
-    const checkStudentID = () => {
+    const getStudentData = () => {
+
         axios({
             method: 'post',
             url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata',
@@ -63,9 +65,29 @@ const Register = (props) => {
                 "stdId": stdID
             }
         }).then((res) => {
-            console.log(res);
             setData(res.data);
         })
+
+    }
+
+    const submitRequest = () => {
+
+        const result = data.apiresult;
+        let info = '';
+        if(result){
+            axios({
+                method: 'post',
+                url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
+                data: {
+                    "stdId": stdID
+                }
+            });
+            info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
+        }else{
+            info = data.data;
+        }
+        setInfoTxt(info);
+        setOpenInfo(true);
     }
 
     const closeInfo = () => {
@@ -74,13 +96,7 @@ const Register = (props) => {
     }
 
     useEffect(() => {
-        if(data === 'student id not found'){
-            setOpenInfo(true);
-            setInfoTxt('ไม่พบรหัสนักศึกษาดังกล่าวในระบบ');
-        }else if (data !== undefined && data !== null) {
-            setOpenInfo(true);
-            setInfoTxt(`คุณ ${data.Item.fName} ${data.Item.lName} ลงทะเบียนสำเร็จ`);
-        }
+        (data !== undefined) && submitRequest();
     }, [data])
 
     return (
