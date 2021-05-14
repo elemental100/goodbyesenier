@@ -1,9 +1,9 @@
-
+import Random from './Random'
 
 function App() {
   return (
     <div >
-      hi
+      <Random/>
     </div>
   );
 }
