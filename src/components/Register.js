@@ -67,6 +67,9 @@ const Register = (props) => {
         }).then((res) => {
             setData(res.data);
         })
+        .catch((err) => {
+            console.log(err);
+        });
 
     }
 
@@ -74,30 +77,40 @@ const Register = (props) => {
 
         const result = data.apiresult;
         let info = '';
-        if(result){
+        if (result) {
+
             axios({
                 method: 'post',
                 url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
                 data: {
                     "stdId": stdID
                 }
-            });
-            info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
-        }else{
+            }).then(() => {
+                info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        } else {
             info = data.data;
         }
         setInfoTxt(info);
         setOpenInfo(true);
+
     }
 
     const closeInfo = () => {
+
         setOpenInfo(false);
         (stdID.length === 10) && setStdID('');
+
     }
 
     useEffect(() => {
         (data !== undefined) && submitRequest();
     }, [data])
+
 
     return (
         <div className={classes.root}>
@@ -110,7 +123,7 @@ const Register = (props) => {
                         size='small' margin='normal' onChange={(e) => setStdID(e.target.value)} onKeyDown={handleKeyDown} type='number'
                         value={stdID} autoFocus
                     />
-                    <Button variant="contained" color="primary" onClick={registerFunc} disabled={(stdID.length ===0)}>
+                    <Button variant="contained" color="primary" onClick={registerFunc} disabled={(stdID.length === 0)}>
                         ลงทะเบียน
                     </Button>
                 </form>
