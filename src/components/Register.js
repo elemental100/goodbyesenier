@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, TextField, Button } from '@material-ui/core';
 import InfoMsg from './InfoMsg';
@@ -37,7 +37,6 @@ const Register = (props) => {
 
     const classes = useStyles();
     const [stdID, setStdID] = useState('');
-    const [data, setData] = useState();
     const [openInfo, setOpenInfo] = useState(false);
     const [infoTxt, setInfoTxt] = useState('');
 
@@ -51,52 +50,45 @@ const Register = (props) => {
             setOpenInfo(true);
             setInfoTxt('กรุณากรอกรหัสนักศึกษาให้ครบ 10 หลัก');
         } else {
-            getStudentData();
+            submitRequest();
         }
 
     }
 
-    const getStudentData = () => {
+    const submitRequest = async () => {
 
-        axios({
-            method: 'post',
-            url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata',
-            data: {
-                "stdId": stdID
-            }
-        }).then((res) => {
-            setData(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        try {
 
-    }
-
-    const submitRequest = () => {
-
-        const result = data.apiresult;
-        let info = '';
-        if (result) {
-
-            axios({
+            const res = await axios({
                 method: 'post',
-                url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
+                url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata',
                 data: {
                     "stdId": stdID
                 }
-            }).then(() => {
-                info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+            });
 
-        } else {
-            info = data.data;
+            const data = res.data
+            const result = data.apiresult;
+            let info = '';
+            if (result) {
+                await axios({
+                    method: 'post',
+                    url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
+                    data: {
+                        "stdId": stdID
+                    }
+                });
+                info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
+            } else {
+                info = data.data;
+            }
+
+            setInfoTxt(info);
+            setOpenInfo(true);
+
+        } catch (error) {
+            console.log(error);
         }
-        setInfoTxt(info);
-        setOpenInfo(true);
 
     }
 
@@ -106,10 +98,6 @@ const Register = (props) => {
         (stdID.length === 10) && setStdID('');
 
     }
-
-    useEffect(() => {
-        (data !== undefined) && submitRequest();
-    }, [data])
 
 
     return (
