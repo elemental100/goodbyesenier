@@ -71,18 +71,27 @@ const Register = (props) => {
             const result = data.apiresult;
             let info = '';
             if (result) {
-                await axios({
-                    method: 'post',
-                    url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
-                    data: {
-                        "stdId": stdID
-                    }
-                });
-                info = `คุณ ${data.data.fName} ${data.data.lName} ลงทะเบียนสำเร็จ`;
+
+                const registered = data.data.registered;
+                const stdInfo = data.data.info
+
+                if (!registered) {
+                    await axios({
+                        method: 'post',
+                        url: 'https://yo2h8kjeh9.execute-api.ap-southeast-1.amazonaws.com/productions/getstudata/register',
+                        data: {
+                            "stdId": stdID
+                        }
+                    });
+                    info = `คุณ ${stdInfo.fName} ${stdInfo.lName} ลงทะเบียนสำเร็จ`;
+                } else {
+                    info = `ลงทะเบียนไปแล้ว`;
+                }
+
             } else {
                 info = data.data;
             }
-
+            
             setInfoTxt(info);
             setOpenInfo(true);
 
