@@ -1,6 +1,6 @@
-import Register from './components/Register';
+import Register from './components/Register/Register';
 import { Route, Switch } from 'react-router-dom';
-import Random from './Random'
+import Random from './components/Random/Random'
 
 function App() {
   return (
