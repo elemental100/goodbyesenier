@@ -11,17 +11,20 @@ const useStyles = makeStyles(() => ({
         backgroundSize: 'cover',
         height: '100vh',
         width: '100%',
-        top: 0,
-        left: 0,
-        position: 'absolute',
-        overflow: 'auto'
+        // top: 0,
+        // left: 0,
+        // position: 'absolute',
+        overflow: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     paper: {
         padding: '20px 20px',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
+        // position: 'absolute',
+        // left: '50%',
+        // top: '50%',
+        // transform: 'translate(-50%, -50%)',
         width: '80%',
         maxWidth: '500px',
         fontSize: '22px'
@@ -41,19 +44,19 @@ const Register = (props) => {
     const [infoTxt, setInfoTxt] = useState('');
 
     const handleKeyDown = (e) => {
-        (e.key === 'Enter') && registerFunc();
+        (e.key === 'Enter') && submitRequest();
     }
 
-    const registerFunc = () => {
+    // const registerFunc = () => {
 
-        if (stdID.length !== 10) {
-            setOpenInfo(true);
-            setInfoTxt('กรุณากรอกรหัสนักศึกษาให้ครบ 10 หลัก');
-        } else {
-            submitRequest();
-        }
+    //     if (stdID.length !== 10) {
+    //         setOpenInfo(true);
+    //         setInfoTxt('กรุณากรอกรหัสนักศึกษาให้ครบ 10 หลัก');
+    //     } else {
+    //         submitRequest();
+    //     }
 
-    }
+    // }
 
     const submitRequest = async () => {
 
@@ -104,7 +107,7 @@ const Register = (props) => {
     const closeInfo = () => {
 
         setOpenInfo(false);
-        (stdID.length === 10) && setStdID('');
+        setStdID('');
 
     }
 
@@ -117,10 +120,11 @@ const Register = (props) => {
                 <form className={classes.loginForm} noValidate autoComplete="off" onSubmit={(e) => e.preventDefault()}>
                     <TextField
                         id="studentID-id" variant="outlined" label="รหัสนักศึกษา(Student ID)" className={classes.txtFld} fullWidth
-                        size='small' margin='normal' onChange={(e) => setStdID(e.target.value)} onKeyDown={handleKeyDown} type='number'
-                        value={stdID} autoFocus
+                        size='small' margin='normal' type='number'
+                        onChange={(e) => setStdID(Math.max(0, parseInt(e.target.value) ).toString().slice(0,10))} onKeyDown={handleKeyDown} 
+                        value={stdID} autoFocus 
                     />
-                    <Button variant="contained" color="primary" onClick={registerFunc} disabled={(stdID.length === 0)}>
+                    <Button variant="contained" color="primary" onClick={submitRequest} disabled={(stdID.length !== 10)}>
                         ลงทะเบียน
                     </Button>
                 </form>
