@@ -1,0 +1,22 @@
+[
+    {
+        "mjId":"210",
+        "mjName":"IT"
+    },
+    {
+        "mjId":"220",
+        "mjName":"IE"
+    },
+    {
+        "mjId":"230",
+        "mjName":"CPE"
+    },
+    {
+        "mjId":"240",
+        "mjName":"AME"
+    },
+    {
+        "mjId":"250",   
+        "mjName":"RAE"
+    }
+]
