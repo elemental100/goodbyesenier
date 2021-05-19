@@ -19,12 +19,12 @@ const getStuInfo = async () => {
 }
 getStuInfo();
 
-
 export default function Random() {
-
     const [position, setPosition] = useState(0);
-    const [name , setName] = useState("");
-    console.log("id",id)
+    const [name, setName] = useState("");
+    
+    console.log(id)
+    console.log("stuInfo", id[position])
     return (
         <div style={{ textAlign: "center" }}>
             <AnimatedNumber
@@ -35,24 +35,25 @@ export default function Random() {
             <div>
                 <button onClick={() => {
                     setPosition([Math.floor(Math.random() * id.length)])
-                    setName("");
+                    setName("")
+                    id.splice([position],1)
                 }
                 }>
                     Random
                 </button>
             </div>
             <div>
-            <button onClick={() => {
-                    setName(`${id[position].fName} ${id[position].lName}`);
-                    // id.splice([position],1);
+                <button onClick={() => {
+                    setName(`${id[position].fName} ${id[position].lName}`);    
                 }
                 }>
                     Showname
                 </button>
             </div>
-            <div>
+            <div >
                 {name}
             </div>
+
         </div>
     );
 }
