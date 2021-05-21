@@ -9,7 +9,7 @@ const Main = (props) => {
     const location = useLocation();
     const stdName = location.state.name;
     const stdID = location.state.stdID;
-    const major = majorsData.filter((major) => major.mjId === stdID.substring(3, 6))
+    const major = majorsData.find((major) => major.mjId === stdID.substring(3, 6))
 
     if(!props.authorized){
         return <Redirect to='/'/>
@@ -18,7 +18,7 @@ const Main = (props) => {
 
     return(
         <div>
-            {stdName} รหัสนักศึกษา {stdID} สาขา {major[0].mjName}
+            {stdName} รหัสนักศึกษา {stdID} สาขา {major.mjName}
         </div>
     )
 }
