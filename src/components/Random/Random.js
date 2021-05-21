@@ -36,6 +36,7 @@ export default function Random() {
                 <button onClick={() => {
                     setPosition([Math.floor(Math.random() * id.length)])
                     setName("");
+                    id.splice([position],1);
                 }
                 }>
                     Random
@@ -44,7 +45,6 @@ export default function Random() {
             <div>
             <button onClick={() => {
                     setName(`${id[position].fName} ${id[position].lName}`);
-                    // id.splice([position],1);
                 }
                 }>
                     Showname
