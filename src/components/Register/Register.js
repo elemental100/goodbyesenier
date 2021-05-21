@@ -4,6 +4,7 @@ import { Paper, TextField, Button } from '@material-ui/core';
 import InfoMsg from './InfoMsg';
 import bgImg from './bgImg.png';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -36,12 +37,15 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const Register = (props) => {
+const Register = ({onSuccess}) => {
 
     const classes = useStyles();
     const [stdID, setStdID] = useState('');
     const [openInfo, setOpenInfo] = useState(false);
     const [infoTxt, setInfoTxt] = useState('');
+    const [data, setData] = useState('');
+    const [nextPage, setNextPage] = useState(false);
+    const history = useHistory();
 
     const handleKeyDown = (e) => {
         (e.key === 'Enter') && submitRequest();
@@ -91,6 +95,9 @@ const Register = (props) => {
                     info = `ลงทะเบียนไปแล้ว`;
                 }
 
+                setNextPage(true);
+                setData(stdInfo);
+
             } else {
                 info = data.data;
             }
@@ -108,6 +115,17 @@ const Register = (props) => {
 
         setOpenInfo(false);
         setStdID('');
+
+        if(nextPage){
+            onSuccess(true);
+            history.push({
+                pathname: '/Main',
+                state: {
+                    name: `${data.fName} ${data.lName}`,
+                    stdID: stdID
+                }
+            })
+        }
 
     }
 
